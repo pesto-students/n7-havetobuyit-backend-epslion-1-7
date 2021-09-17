@@ -1,0 +1,1 @@
+export const TRANSPORTER = 'MANDRILL_TRANSPORTER';
