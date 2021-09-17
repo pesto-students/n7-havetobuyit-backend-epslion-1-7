@@ -1,3 +1,9 @@
+import { ProductModel, ProductSchema } from './schemas/product/product.schema';
+import {
+  ReactionModel,
+  ReactionSchema,
+} from './schemas/product/reaction.schema';
+import { ReviewModel, ReviewSchema } from './schemas/product/review.schema';
 import {
   RevokedTokenModel,
   RevokedTokenSchema,
@@ -12,5 +18,17 @@ export const schemaProviders = [
   {
     name: RevokedTokenModel.name,
     schema: RevokedTokenSchema,
+  },
+  {
+    name: ProductModel.name,
+    schema: ProductSchema,
+  },
+  {
+    name: ReactionModel.name,
+    schema: ReactionSchema,
+  },
+  {
+    name: ReviewModel.name,
+    schema: ReviewSchema,
   },
 ];
