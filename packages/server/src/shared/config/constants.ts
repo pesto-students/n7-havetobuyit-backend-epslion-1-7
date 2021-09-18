@@ -1,6 +1,13 @@
 import ms from 'ms';
+import { AvailableReactions } from '../../interfaces/product.interface';
 export const MandrillProductionApiKey = process.env.MandrillProductionApiKey;
 export const MandrillTestApiKey = process.env.MandrillTestApiKey;
+
+export const ReactionToSentimentMapping = {
+  [AvailableReactions.Sad]: -1,
+  [AvailableReactions.Neutral]: 0,
+  [AvailableReactions.Happy]: 1,
+};
 
 export const DB_URL =
   process.env.MONGODB_URL || 'mongodb://localhost/indepreneur-dev-db';
