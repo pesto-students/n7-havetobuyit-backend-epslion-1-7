@@ -10,7 +10,7 @@ export const ReactionToSentimentMapping = {
 };
 
 export const DB_URL =
-  process.env.MONGODB_URL || 'mongodb://localhost/indepreneur-dev-db';
+  process.env.MONGODB_URL || 'mongodb://localhost/havtobuyit-dev-db';
 
 export interface AppError {
   message: string;

@@ -15,11 +15,15 @@ import { ReviewSchema } from './review.schema';
   timestamps: true,
 })
 export class ProductModel extends Document implements Product {
+  @Prop()
+  title: string;
+
+  @Prop()
+  description: string;
+
   @Prop({
-    type: {
-      type: Types.ObjectId,
-      ref: UserModel.name,
-    },
+    type: Types.ObjectId,
+    ref: 'usermodels',
   })
   postedBy: User;
 

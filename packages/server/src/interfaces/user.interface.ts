@@ -1,3 +1,5 @@
+import { Product } from './product.interface';
+
 export interface User {
   status: UserStatus;
   userRegisteredAt?: Date;
@@ -8,6 +10,7 @@ export interface User {
   addresses: Address[];
   firstName: string;
   lastName: string;
+  orderedProducts: Product[];
 }
 
 export enum SocialLogins {

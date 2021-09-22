@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { Product } from '../../../interfaces/product.interface';
 import {
   User,
   Credentials,
@@ -7,6 +8,7 @@ import {
   UserStatus,
   Address,
 } from '../../../interfaces/user.interface';
+import { ProductModel, ProductSchema } from '../product/product.schema';
 import { AddressSchema } from './address.schema';
 import { CredentialsSchema } from './credential.schema';
 
@@ -26,6 +28,12 @@ export class UserModel extends Document implements User {
     default: Date.now,
   })
   userRegisteredAt: Date;
+
+  @Prop({
+    type: [Types.ObjectId],
+    ref: ProductModel.name,
+  })
+  orderedProducts: Product[];
 
   @Prop()
   lifetimeValue: number;

@@ -4,7 +4,9 @@ import { config } from 'dotenv';
 
 import { Injectable } from '@nestjs/common';
 
-config();
+config({
+  path: './.prod.env',
+});
 
 export const GoogleStrategyName = 'google';
 

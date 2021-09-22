@@ -35,7 +35,10 @@ export class UserRepository {
     return this.userModel.find().lean();
   }
 
-  async updateOne(email: string, updatedUserObject: User): Promise<User> {
+  async updateOne(
+    email: string,
+    updatedUserObject: Partial<User>,
+  ): Promise<User> {
     return this.userModel
       .findOneAndUpdate({ 'credentials.email': email }, updatedUserObject, {
         new: true,

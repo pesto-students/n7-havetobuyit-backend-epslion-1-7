@@ -179,6 +179,7 @@ export class AuthService {
     const user: User = {
       status: UserStatus.Inactivated,
       addresses: [],
+      orderedProducts: [],
       firstName: createUserPayload.firstName,
       lastName: createUserPayload.firstName,
       lastLogin: null,

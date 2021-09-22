@@ -1,4 +1,6 @@
 import faker from 'faker';
+import request from 'supertest';
+import { testPost } from './common';
 
 export const getValidEmail = () => faker.internet.email();
 export const getInvalidPassword = () => faker.datatype.string(5);
@@ -15,6 +17,28 @@ export const getValidRegisterCredentials = () => ({
 });
 
 export const TokenUrlLandmark = 'change/';
+
+export const getAccessTokenByLogin = async (
+  app: any,
+  email: string,
+  password: string,
+) => {
+  let token: string;
+
+  await request(app.getHttpServer())
+    .post('/auth/login')
+    .type('form')
+    .send({
+      email,
+      password,
+    })
+    .expect(201)
+    .expect(res => {
+      token = res.body.access_token;
+      expect(token).toBeTruthy();
+    });
+  return () => token;
+};
 
 export const getTokenFromHTML = (
   html: string,

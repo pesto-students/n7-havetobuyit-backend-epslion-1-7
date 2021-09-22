@@ -3,6 +3,7 @@ import { UserSchema } from 'src/db/schemas/user/user.schema';
 import { User, UserRoles, UserStatus } from '../../interfaces/user.interface';
 
 export const mockUser = (): User => ({
+  orderedProducts: [],
   addresses: [],
   credentials: {
     email: faker.internet.email(),

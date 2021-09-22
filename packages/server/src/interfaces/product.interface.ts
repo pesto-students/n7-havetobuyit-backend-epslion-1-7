@@ -26,6 +26,8 @@ export enum ProductStatus {
 }
 
 export interface Product {
+  title: string;
+  description: string;
   postedBy: User;
   postedAt: Date;
   status: ProductStatus;
