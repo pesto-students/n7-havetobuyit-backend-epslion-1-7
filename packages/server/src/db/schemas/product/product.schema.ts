@@ -21,6 +21,9 @@ export class ProductModel extends Document implements Product {
   @Prop()
   description: string;
 
+  @Prop()
+  images: string[];
+
   @Prop({
     type: Types.ObjectId,
     ref: 'usermodels',
@@ -40,7 +43,7 @@ export class ProductModel extends Document implements Product {
   })
   status: ProductStatus;
 
-  @Prop()
+  @Prop({ default: 0 })
   overallRating: number;
 
   @Prop({

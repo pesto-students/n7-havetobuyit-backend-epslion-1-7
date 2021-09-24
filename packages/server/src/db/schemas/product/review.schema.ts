@@ -7,10 +7,8 @@ import { UserModel, UserSchema } from '../user/user.schema';
 @Schema()
 export class ReviewModel extends Document implements Review {
   @Prop({
-    type: {
-      type: Types.ObjectId,
-      ref: 'usermodels',
-    },
+    type: Types.ObjectId,
+    ref: 'usermodels',
   })
   byUser: User;
 

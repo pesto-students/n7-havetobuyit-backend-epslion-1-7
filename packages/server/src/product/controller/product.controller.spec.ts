@@ -14,7 +14,12 @@ import {
 import { UserTestBedService } from '../../test-utils/user/user.test-bed.service';
 import { mockProduct, mockReview } from '../../test-utils/product/product';
 import { ProductTestBedService } from '../../test-utils/product/product.test-bed.service';
-import { ProductStatus } from '../../interfaces/product.interface';
+import {
+  AvailableReactions,
+  ProductStatus,
+} from '../../interfaces/product.interface';
+import { ProductController } from './product.controller';
+import { ProductService } from '../service/product.service';
 
 describe('ProductController', () => {
   let app: INestApplication;
@@ -24,8 +29,8 @@ describe('ProductController', () => {
   beforeEach(async () => {
     const { transporter } = await buildMockTransportFactory();
     app = await makeTestModule(
-      [AuthController],
-      [UserTestBedService, ProductTestBedService, transporter],
+      [AuthController, ProductController],
+      [ProductService, UserTestBedService, ProductTestBedService, transporter],
     );
     await app.init();
     userTestBedService = app.get(UserTestBedService);
@@ -52,8 +57,15 @@ describe('ProductController', () => {
       );
     });
 
-    it.only('should be able to create an in-draft product on POST /product/new', async () => {
-      const { status: _, ...product } = mockProduct();
+    it('should be able to create an in-draft product on POST /product/new', async () => {
+      const {
+        status,
+        overallRating,
+        postedAt,
+        reactions,
+        reviews,
+        ...product
+      } = mockProduct();
       return testPost(app, '/product/new', getCachedToken)
         .send(product)
         .expect(201)
@@ -71,6 +83,7 @@ describe('ProductController', () => {
         userObj.document._id,
       );
       return testPost(app, '/product/request-publish', getCachedToken)
+        .send({ productId: document._id.toString() })
         .expect(201)
         .expect(async ({ body }) => {
           expect(body.status).toBe(ProductStatus.InReview);
@@ -84,21 +97,28 @@ describe('ProductController', () => {
       const { document } = await productTestBedService.insertProduct(
         userObj.document._id,
       );
-      return testPatch(app, `/product/${document._id}`, getCachedToken)
+      return testPatch(app, `/product/${document._id}/reaction`, getCachedToken)
+        .send({ reaction: AvailableReactions.Happy.toString() })
         .expect(200)
-        .send({ reaction: 1 })
         .expect(async () => {
           const productDoc = await productTestBedService
             .getModel()
             .findOne({ _id: document._id });
-          expect(productDoc.reactions).toContain(userObj.document._id);
+          expect(productDoc.reactions).toHaveLength(1);
+          expect(productDoc.reactions[0].user).toBe(
+            userObj.document._id.toString(),
+          );
         });
     });
     it('should throw 401 when unauthenticated user tries adding a reaction on PATCH /product/:productId', async () => {
       const { document } = await productTestBedService.insertProduct(
         userObj.document._id,
       );
-      return testPatch(app, `/product/${document._id}/`, () => '').expect(401);
+      return testPatch(
+        app,
+        `/product/${document._id}/reaction`,
+        () => '',
+      ).expect(401);
     });
 
     it('should be able to add review to a product on POST /product/:productId/review', async () => {
@@ -119,10 +139,10 @@ describe('ProductController', () => {
             .getModel()
             .findOne({ _id: document._id });
           expect(productModel.reviews).toHaveLength(1);
-          expect(productModel.reviews).toContain(
-            expect.objectContaining(review),
+          expect(productModel.reviews[0].byUser).toBe(
+            userObj.document._id.toString(),
           );
-          expect(productModel.reviews[0].byUser).toBe(userObj.document._id);
+          expect(productModel.reviews[0].title).toBe(review.title);
         });
     });
     it("should throw 400 error if user who hasn't bought the product tries to post review on POST /product/:productId/review", async () => {
@@ -132,40 +152,30 @@ describe('ProductController', () => {
       const review = mockReview();
       return testPost(app, `/product/${document._id}/review`, getCachedToken)
         .send(review)
-        .expect(201)
-        .expect(async () => {
-          const productModel = await productTestBedService
-            .getModel()
-            .findOne({ _id: document._id });
-          expect(productModel.reviews).toHaveLength(1);
-          expect(productModel.reviews).toContain(
-            expect.objectContaining(review),
-          );
-          expect(productModel.reviews[0].byUser).toBe(userObj.document._id);
-        });
+        .expect(400);
     });
     it('should be able to un-publish a product on PATCH /product/un-publish', async () => {
       const { document } = await productTestBedService.insertProduct(
         userObj.document._id,
       );
-      return testPatch(app, `/product/${document._id}`, getCachedToken)
+      return testPatch(app, `/product/un-publish`, getCachedToken)
         .send({
-          productId: document._id,
+          productId: document._id.toString(),
         })
         .expect(200)
         .expect(async () => {
           const productDoc = await productTestBedService
             .getModel()
             .findOne({ _id: document._id });
-          expect(productDoc.reactions).toContain(userObj.document._id);
+          expect(productDoc.status).toBe(ProductStatus.Draft);
         });
     });
-    it('should be able to update details of in-draft product when PATCH /product/:productId', async () => {
+    it('should be able to update details of in-draft product when PATCH /product/:productId/update', async () => {
       const { document } = await productTestBedService.insertProduct(
         userObj.document._id,
       );
       const title = faker.random.words();
-      return testPatch(app, `/product/${document._id}`, getCachedToken)
+      return testPatch(app, `/product/${document._id}/update`, getCachedToken)
         .send({
           title,
         })
@@ -177,12 +187,25 @@ describe('ProductController', () => {
           expect(productModel.title).toBe(title);
         });
     });
+    it('should throw error when in-review/published on updation of in-review/published product when PATCH /product/:productId/update', async () => {
+      const { document } = await productTestBedService.insertProduct(
+        userObj.document._id,
+      );
+      document.status = ProductStatus.InReview;
+      await document.save();
+      const title = faker.random.words();
+      return testPatch(app, `/product/${document._id}/update`, getCachedToken)
+        .send({
+          title,
+        })
+        .expect(409);
+    });
   });
 
   describe('Public Routes', () => {
     it('should get products in descending order of overallRating on GET /product', async () => {
       await productTestBedService.insertNProducts();
-      return testGet(app, '/product', () => '')
+      return testGet(app, '/product/0/10', () => '')
         .expect(200)
         .expect(async ({ body }) => {
           for (let i = 0; i < body.length - 1; i += 1) {
@@ -191,21 +214,6 @@ describe('ProductController', () => {
             );
           }
         });
-    });
-    it('should get a random product on GET /product/random', async () => {
-      let product1, product2;
-      await productTestBedService.insertNProducts();
-      await testGet(app, '/product/random', () => '')
-        .expect(200)
-        .expect(async ({ body }) => {
-          product1 = body.title;
-        });
-      await testGet(app, '/product/random', () => '')
-        .expect(200)
-        .expect(async ({ body }) => {
-          product2 = body.title;
-        });
-      return expect(product1).not.toBe(product2);
     });
   });
 });

@@ -28,10 +28,15 @@ export enum ProductStatus {
 export interface Product {
   title: string;
   description: string;
+  images: string[];
   postedBy: User;
   postedAt: Date;
   status: ProductStatus;
   reactions: Reaction[];
   reviews: Review[];
   overallRating: number;
+}
+
+export interface PublishProductPayload {
+  productId: string;
 }

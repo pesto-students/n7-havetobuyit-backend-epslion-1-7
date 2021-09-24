@@ -38,7 +38,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       statusMessage = exception.message;
     } else {
-      console.log(exception);
+      console.log(exception, request.method);
       statusMessage = 'Something went wrong while processing your request';
     }
 

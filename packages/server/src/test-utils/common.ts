@@ -23,6 +23,7 @@ import { TRANSPORTER } from '../shared/mail/constants';
 import { AuthController } from '../auth/controller/auth.controller';
 import { UserService } from '../user/service/user.service';
 import { transportFactory } from '../shared/mail/transport.factory';
+import { ProductService } from '../product/service/product.service';
 
 export const provideMongoDb = () => {
   return [MongooseModule.forRoot(DB_URL)];
@@ -67,8 +68,8 @@ export const makeTestModule = async (controllers: any[], services: any[]) => {
     controllers: [AuthController, ...controllers],
     imports: [
       ...provideMongoDb(),
-      AuthModule,
       DatabaseModule,
+      AuthModule,
       JwtModule.register({
         secret: JWT_SECRET,
         signOptions: { expiresIn: '1d' },

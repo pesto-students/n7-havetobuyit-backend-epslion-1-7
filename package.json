@@ -8,10 +8,6 @@
     "lint": "eslint . --ext '*/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint --fix . --ext '*/**/*.{js,ts,tsx}'",
     "format": "cross-env NODE_ENV=development NODE_OPTIONS=--max_old_space_size=4096 prettier **/**/*.{js,ts,tsx} --ignore-path ./.prettierignore --write && git status",
-    "build:webapp": "lerna run --scope @indepreneur/webapp build",
-    "build:backend": "lerna run --scope @indepreneur/server build",
-    "start:backend": "lerna run --scope @indepreneur/server start",
-    "start:webapp": "lerna run --scope @indepreneur/webapp start",
     "seed": "cd packages/server/src && npx ts-node ./seeder",
     "start:app": "npm run build:backend && npm run seed && concurrently \"npm run start:backend\" \"NODE_ENV=development BUILD_SERVER_URL=http://localhost:3019/ npm run build:webapp && npm run start:webapp\""
   },

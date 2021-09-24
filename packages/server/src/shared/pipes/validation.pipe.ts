@@ -2,19 +2,19 @@ import {
   PipeTransform,
   Injectable,
   ArgumentMetadata,
-  BadRequestException
+  BadRequestException,
 } from '@nestjs/common';
 import {
   ObjectSchema,
   StringSchema,
   NumberSchema,
-  ArraySchema
+  ArraySchema,
 } from '@hapi/joi';
 
 @Injectable()
 export class JoiValidationPipe implements PipeTransform {
   constructor(
-    private schema: ObjectSchema | StringSchema | NumberSchema | ArraySchema
+    private schema: ObjectSchema | StringSchema | NumberSchema | ArraySchema,
   ) {}
 
   transform(value: any, metadata: ArgumentMetadata) {

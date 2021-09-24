@@ -7,17 +7,18 @@ import {
 
 export const mockProduct = (): Omit<Product, 'postedBy'> => ({
   title: faker.random.words(4),
-  description: faker.lorem.sentences(),
+  description: faker.lorem.sentences(5),
   overallRating: faker.datatype.number(),
   postedAt: new Date(),
   reactions: [],
   reviews: [],
   status: ProductStatus.Draft,
+  images: [faker.internet.url()],
 });
 
 export const mockReview = (): Omit<Review, 'byUser'> => ({
-  description: faker.lorem.sentences(),
+  description: faker.lorem.sentences(50),
   images: [],
-  rating: faker.datatype.number(),
-  title: faker.random.words(4),
+  rating: faker.datatype.number({ min: 1, max: 5 }),
+  title: faker.lorem.sentences(4),
 });

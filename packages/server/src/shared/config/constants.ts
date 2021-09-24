@@ -25,6 +25,11 @@ const ErrorCodes = {
   INVALID_REFRESH_TOKEN: 5,
   USER_DOES_NOT_EXIST: 6,
   INVALID_EMAIL_VERIFICATION_TOKEN: 7,
+  PRODUCT_NOT_EXIST: 9,
+  NO_IAMGES_ADDED_TO_PRODUCT: 10,
+  CANNOT_ADD_REVIEW_TO_PRODUCT: 11,
+  INVALID_PRODUCT_FOR_PUBLISH: 12,
+  CANNOT_UPDATE_NON_DRAFT_PRODUCT: 13,
 };
 
 export const AuthenticationErrors = {
@@ -59,6 +64,29 @@ export const UserErrors = {
     code: ErrorCodes.USER_DOES_NOT_EXIST,
   },
 };
+export const ProductErrors = {
+  NOT_EXIST: {
+    message: 'Specified product does not exist',
+    code: ErrorCodes.PRODUCT_NOT_EXIST,
+  },
+  NO_IMAGES_ADDED_TO_PRODUCT: {
+    message: 'Specified product should contain atlease one image to publish',
+    code: ErrorCodes.NO_IAMGES_ADDED_TO_PRODUCT,
+  },
+  CANNOT_ADD_REVIEW_TO_PRODUCT: {
+    message: 'User has not bought the product',
+    code: ErrorCodes.CANNOT_ADD_REVIEW_TO_PRODUCT,
+  },
+  INVALID_PRODUCT_FOR_PUBLISH: {
+    message: 'User has not posted this product',
+    code: ErrorCodes.INVALID_PRODUCT_FOR_PUBLISH,
+  },
+  CANNOT_UPDATE_NON_DRAFT_PRODUCT: {
+    message:
+      'Cannot update in-review/published product. Please unpublish this product before editing.',
+    code: ErrorCodes.CANNOT_UPDATE_NON_DRAFT_PRODUCT,
+  },
+};
 
 export const SALT_ROUNDS = 10;
 
@@ -82,6 +110,11 @@ export const HTTP_EXCEPTIONS_MAPPING = {
   [ErrorCodes.INVALID_PASS_RESET_TOKEN]: 401,
   [ErrorCodes.INVALID_REFRESH_TOKEN]: 406,
   [ErrorCodes.INVALID_EMAIL_VERIFICATION_TOKEN]: 401,
+  [ErrorCodes.PRODUCT_NOT_EXIST]: 404,
+  [ErrorCodes.NO_IAMGES_ADDED_TO_PRODUCT]: 409,
+  [ErrorCodes.CANNOT_ADD_REVIEW_TO_PRODUCT]: 400,
+  [ErrorCodes.INVALID_PRODUCT_FOR_PUBLISH]: 400,
+  [ErrorCodes.CANNOT_UPDATE_NON_DRAFT_PRODUCT]: 409,
 };
 export const MailOptions = {
   from_email: 'support@havetobuyit.com',
@@ -94,3 +127,15 @@ export const HtmlTemplateLinkPlaceholder = '#$@link@$#';
 
 export const MinPasswordLength = 8;
 export const MaxPasswordLength = 128;
+
+export const ReactionsMapping = {
+  [AvailableReactions.Happy]: 1,
+  [AvailableReactions.Sad]: -1,
+  [AvailableReactions.Neutral]: 0,
+};
+
+export const ReactionWeight = 1.25;
+export const ReviewWeight = 1.5;
+
+export const DefaultProductsLimit = 10;
+export const DefaultProductSkip = 0;
