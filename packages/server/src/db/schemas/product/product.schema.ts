@@ -43,7 +43,7 @@ export class ProductModel extends Document implements Product {
   })
   status: ProductStatus;
 
-  @Prop({ default: 0 })
+  @Prop({ default: 0 }) //TODOT: Bigint
   overallRating: number;
 
   @Prop({

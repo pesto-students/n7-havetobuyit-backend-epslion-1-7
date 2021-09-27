@@ -6,6 +6,7 @@ import { importMongooseModule } from './db/database.module';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ProductModule } from './product/product.module';
     UserModule,
     AuthModule,
     ProductModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

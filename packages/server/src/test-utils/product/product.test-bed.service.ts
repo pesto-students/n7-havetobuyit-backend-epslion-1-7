@@ -19,7 +19,7 @@ export class ProductTestBedService {
         ...product,
         postedBy: (byUserId as unknown) as User,
       }),
-      product,
+      product: { ...product, postedBy: (byUserId as unknown) as User },
     };
   }
   async insertNProducts(n = 10) {

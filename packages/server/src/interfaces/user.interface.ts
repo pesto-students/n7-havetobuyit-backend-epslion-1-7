@@ -40,3 +40,8 @@ export interface Address {
   state: string;
   country: string;
 }
+export interface AnonymousUser {
+  email: string;
+  mobileNo: string;
+  address: Address;
+}

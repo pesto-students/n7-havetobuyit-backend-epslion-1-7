@@ -93,7 +93,7 @@ describe('ProductController', () => {
           expect(productDoc.status).toBe(ProductStatus.InReview);
         });
     });
-    it('should be able to add a reaction to a product on PATCH /product/:productId', async () => {
+    it('should be able to add a reaction to a product on PATCH /product/:productId/reaction', async () => {
       const { document } = await productTestBedService.insertProduct(
         userObj.document._id,
       );
