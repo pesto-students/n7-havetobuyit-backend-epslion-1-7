@@ -43,6 +43,9 @@ export class ProductModel extends Document implements Product {
   })
   status: ProductStatus;
 
+  @Prop()
+  price: number;
+
   @Prop({ default: 0 }) //TODOT: Bigint
   overallRating: number;
 

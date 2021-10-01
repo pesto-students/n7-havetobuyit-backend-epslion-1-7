@@ -16,6 +16,7 @@ import {
 import { User } from '../../interfaces/user.interface';
 import { UserRepository } from '../../db/services/user.repository';
 import { ProductModel } from '../../db/schemas/product/product.schema';
+import { UserModel } from 'src/db/schemas/user/user.schema';
 
 @Injectable()
 export class ProductService {
@@ -34,6 +35,7 @@ export class ProductService {
   async getProducts(querySkip: number, queryLimit: number) {
     const skip = querySkip;
     const limit = queryLimit;
+    console.log(skip, limit);
 
     const links = {
       totalPages: Math.ceil(
@@ -48,9 +50,10 @@ export class ProductService {
     const data = await this.productRepository
       .getModel()
       .find()
-      .sort('overallRating')
       .skip(skip * limit)
       .limit(limit)
+      .sort('overallRating')
+      .populate('postedBy', 'firstName', UserModel.name)
       .exec();
 
     return {

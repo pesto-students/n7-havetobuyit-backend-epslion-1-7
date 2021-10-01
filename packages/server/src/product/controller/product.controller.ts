@@ -47,14 +47,14 @@ export class ProductController {
       'skip',
       new JoiValidationPipe(Joi.number().default(DefaultProductSkip)),
     )
-    skip: number,
+    skip: string,
     @Param(
       'limit',
       new JoiValidationPipe(Joi.number().default(DefaultProductsLimit)),
     )
-    limit: number,
+    limit: string,
   ) {
-    return this.productService.getProducts(skip, limit);
+    return this.productService.getProducts(parseInt(skip), parseInt(limit));
   }
 
   @Get('/random')
