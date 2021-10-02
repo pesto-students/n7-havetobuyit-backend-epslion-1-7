@@ -1,3 +1,4 @@
+import { OrderModel, OrderSchema } from './schemas/order/order.schema';
 import { ProductModel, ProductSchema } from './schemas/product/product.schema';
 import {
   ReactionModel,
@@ -36,4 +37,5 @@ export const schemaProviders = [
     schema: ReviewSchema,
   },
   { name: AnonymousUserModel.name, schema: AnonymousUserSchema },
+  { name: OrderModel.name, schema: OrderSchema },
 ];

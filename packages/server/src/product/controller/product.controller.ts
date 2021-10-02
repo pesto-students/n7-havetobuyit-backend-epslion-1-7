@@ -25,16 +25,22 @@ import { HttpExceptionFilter } from '../../shared/filters/http-exception.filter'
 import { ProductService } from '../../shared/product/product.service';
 import {
   createProductSchema,
+  createProductSwaggerSchema,
   idSchema,
   productIdSchema,
+  productIdSwaggerSchema,
   reactionSchema,
+  reactionSwaggerSchema,
   reviewSchema,
+  reviewSwaggerSchema,
   updateProductSchema,
+  updateProductSwaggerSchema,
 } from './validation.schema';
 import {
   DefaultProductSkip,
   DefaultProductsLimit,
 } from '../../shared/config/constants';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('product')
 @UseFilters(new HttpExceptionFilter())
@@ -65,6 +71,9 @@ export class ProductController {
   @Post('new')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.User)
+  @ApiBody({
+    schema: createProductSwaggerSchema,
+  })
   createProduct(
     @Body(new JoiValidationPipe(createProductSchema)) productPayload: Product,
   ) {
@@ -74,6 +83,9 @@ export class ProductController {
   @Post('request-publish')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.User)
+  @ApiBody({
+    schema: productIdSwaggerSchema,
+  })
   publishProduct(
     @Req() request,
     @Body(new JoiValidationPipe(productIdSchema))
@@ -87,6 +99,9 @@ export class ProductController {
   @Patch('un-publish')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.User)
+  @ApiBody({
+    schema: productIdSwaggerSchema,
+  })
   unPublish(
     @Req() request,
     @Body(new JoiValidationPipe(productIdSchema))
@@ -98,6 +113,9 @@ export class ProductController {
   @Patch('/:productId/reaction')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.User)
+  @ApiBody({
+    schema: reactionSwaggerSchema,
+  })
   addReaction(
     @Req() request,
     @Param('productId', new JoiValidationPipe(idSchema)) productId: string,
@@ -114,6 +132,9 @@ export class ProductController {
   @Post('/:productId/review')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.User)
+  @ApiBody({
+    schema: reviewSwaggerSchema,
+  })
   addReview(
     @Req() req,
     @Param('productId', new JoiValidationPipe(idSchema)) productId: string,
@@ -125,6 +146,9 @@ export class ProductController {
   @Patch('/:productId/update')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.User)
+  @ApiBody({
+    schema: updateProductSwaggerSchema,
+  })
   updateProduct(
     @Req() req,
     @Param('productId', new JoiValidationPipe(idSchema)) productId: string,

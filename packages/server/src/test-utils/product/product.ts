@@ -15,6 +15,7 @@ export const mockProduct = (): Omit<Product, 'postedBy'> => ({
   status: ProductStatus.Draft,
   images: [faker.internet.url()],
   price: faker.datatype.number(),
+  categories: [faker.random.word()],
 });
 
 export const mockReview = (): Omit<Review, 'byUser'> => ({

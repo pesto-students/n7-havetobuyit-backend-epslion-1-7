@@ -4,6 +4,7 @@ import path from 'path';
 import { Mandrill } from 'mandrill-api';
 import { config } from 'dotenv';
 import request from 'supertest';
+import { StripeModule } from 'nestjs-stripe';
 import faker from 'faker';
 import { JwtModule } from '@nestjs/jwt';
 import mongoose from 'mongoose';
@@ -11,6 +12,7 @@ import {
   DB_URL,
   JWT_SECRET,
   MandrillTestApiKey,
+  StripeProductionSecretKey,
 } from '../shared/config/constants';
 import { TestingModule, Test } from '@nestjs/testing';
 import { AuthModule } from '../auth/auth.module';
@@ -60,6 +62,7 @@ export const makeTestModule = async (controllers: any[], services: any[]) => {
       transportFactory,
       MailService,
       UserService,
+      ProductService,
       ...services,
     ],
     controllers: [AuthController, ...controllers],
@@ -71,7 +74,10 @@ export const makeTestModule = async (controllers: any[], services: any[]) => {
         secret: JWT_SECRET,
         signOptions: { expiresIn: '1d' },
       }),
-      HttpModule,
+      StripeModule.forRoot({
+        apiKey: StripeProductionSecretKey,
+        apiVersion: '2020-08-27',
+      }),
     ],
   }).compile();
   return moduleRef.createNestApplication();

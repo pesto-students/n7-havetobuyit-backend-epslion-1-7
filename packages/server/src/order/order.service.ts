@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectStripe } from 'nestjs-stripe';
-import { CheckoutPayload } from 'src/interfaces/order.interface';
-import { ProductService } from 'src/shared/product/product.service';
-import { UserService } from 'src/user/service/user.service';
 import Stripe from 'stripe';
+import { CheckoutPayload } from '../interfaces/order.interface';
+import { ProductService } from '../shared/product/product.service';
 
 @Injectable()
 export class OrderService {

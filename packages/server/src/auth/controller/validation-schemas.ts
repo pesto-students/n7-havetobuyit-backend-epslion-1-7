@@ -1,4 +1,5 @@
-import * as Joi from '@hapi/joi';
+import * as Joi from 'joi';
+import j2s from 'joi-to-swagger';
 import {
   MinPasswordLength,
   MaxPasswordLength,
@@ -18,6 +19,8 @@ export const loginSchema = Joi.object<LoginCredentials>({
     .required(),
 });
 
+export const { swagger: loginSwaggerSchema } = j2s(loginSchema);
+
 export const createAccountSchema = Joi.object<CreateAccountCredentials>({
   email: Joi.string()
     .email()
@@ -33,12 +36,16 @@ export const createAccountSchema = Joi.object<CreateAccountCredentials>({
     .min(3)
     .required(),
 });
+export const { swagger: createAccountSwaggerSchema } = j2s(createAccountSchema);
 
 export const resetPasswordEmailSchema = Joi.object({
   email: Joi.string()
     .email()
     .required(),
 });
+export const { swagger: resetPasswordEmailSwaggerSchema } = j2s(
+  resetPasswordEmailSchema,
+);
 
 export const tokenSchema = Joi.string()
   .min(10)
@@ -49,6 +56,7 @@ export const resetPasswordSchema = Joi.object<{ password: string }>({
     .max(MaxPasswordLength)
     .required(),
 });
+export const { swagger: resetPasswordSwaggerSchema } = j2s(resetPasswordSchema);
 
 export const paramEmailSchema = Joi.string()
   .email()

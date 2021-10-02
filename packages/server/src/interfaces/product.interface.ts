@@ -35,6 +35,7 @@ export interface Product {
   reactions: Reaction[];
   reviews: Review[];
   overallRating: number;
+  categories: string[];
   price: number;
 }
 

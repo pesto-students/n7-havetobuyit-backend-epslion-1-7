@@ -3,8 +3,8 @@ import { Order } from '../../interfaces/order.interface';
 import { User } from '../../interfaces/user.interface';
 import { mockOrder } from './order';
 import { OrderModel } from '../../db/schemas/order/order.schema';
-import { OrderRepository } from 'src/db/services/order.repository';
-import { Product } from 'src/interfaces/product.interface';
+import { OrderRepository } from '../../db/services/order.repository';
+import { Product } from '../../interfaces/product.interface';
 
 @Injectable()
 export class OrderTestBedService {

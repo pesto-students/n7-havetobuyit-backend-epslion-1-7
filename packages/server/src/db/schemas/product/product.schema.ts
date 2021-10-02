@@ -62,6 +62,9 @@ export class ProductModel extends Document implements Product {
     ],
   })
   reviews: Review[];
+
+  @Prop()
+  categories: string[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(ProductModel);

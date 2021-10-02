@@ -17,12 +17,12 @@ import { ProductTestBedService } from '../../test-utils/product/product.test-bed
 import { UserTestBedService } from '../../test-utils/user/user.test-bed.service';
 import { OrderController } from './order.controller';
 import { OrderService } from '../order.service';
-import { UserModel } from 'src/db/schemas/user/user.schema';
-import { User } from 'src/interfaces/user.interface';
-import { ProductModel } from 'src/db/schemas/product/product.schema';
-import { Product } from 'src/interfaces/product.interface';
-import { mockAddress } from 'src/test-utils/user/user';
-import { OrderStatus } from 'src/interfaces/order.interface';
+import { UserModel } from '../../db/schemas/user/user.schema';
+import { User } from '../../interfaces/user.interface';
+import { ProductModel } from '../../db/schemas/product/product.schema';
+import { Product } from '../../interfaces/product.interface';
+import { mockAddress } from '../../test-utils/user/user';
+import { OrderStatus } from '../../interfaces/order.interface';
 
 describe('OrderController', () => {
   let app: INestApplication;
@@ -73,9 +73,9 @@ describe('OrderController', () => {
     it('');
   });
 
-  // Remove anonymous 
+  // Remove anonymous
   // Remove payment
-  // Send email on order to product 
+  // Send email on order to product
   // All orders are pay on delivery
 
   describe('Public Routes', () => {

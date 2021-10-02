@@ -17,10 +17,13 @@ import { AuthService } from '../../shared/auth/auth.service';
 import { HttpExceptionFilter } from '../../shared/filters/http-exception.filter';
 import {
   createAccountSchema,
+  createAccountSwaggerSchema,
   loginSchema,
+  loginSwaggerSchema,
   paramEmailSchema,
   resetPasswordEmailSchema,
   resetPasswordSchema,
+  resetPasswordSwaggerSchema,
   tokenSchema,
 } from './validation-schemas';
 import { LocalAuthGuard } from '../../shared/auth/auth.guard';
@@ -30,6 +33,13 @@ import {
   RefreshTokenExpirationTime,
 } from '../../shared/config/constants';
 import { GoogleAuthGuard } from '../../shared/auth/google.guard';
+import {
+  ApiBody,
+  ApiCookieAuth,
+  ApiHeader,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 @Controller('auth')
 @UseFilters(new HttpExceptionFilter())
@@ -37,6 +47,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
+  @ApiBody({
+    schema: createAccountSwaggerSchema,
+  })
   @UsePipes(new JoiValidationPipe(createAccountSchema))
   async register(@Body() createUserDto: CreateAccountCredentials) {
     return this.authService.createUserFromRegistration(createUserDto);
@@ -45,6 +58,9 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
   @UsePipes(new JoiValidationPipe(loginSchema))
+  @ApiBody({
+    schema: loginSwaggerSchema,
+  })
   async login(@Req() request, @Res() response: Response) {
     response.cookie(
       UserRefreshTokenCookieName,
@@ -77,6 +93,11 @@ export class AuthController {
   }
 
   @Get('access-token')
+  @ApiCookieAuth(UserRefreshTokenCookieName)
+  @ApiOperation({
+    summary: `Once you're logged in, server automatically sets refresh token as a cookie. When a call is made to this endpoint with refresh token an access token is returned`,
+  })
+  @ApiResponse({})
   async getAccessToken(@Req() request: Request) {
     if (request.cookies[UserRefreshTokenCookieName]) {
       const decodedToken = await this.authService.validateRefreshToken(
@@ -90,6 +111,7 @@ export class AuthController {
   }
 
   @Get('logout')
+  @ApiCookieAuth(UserRefreshTokenCookieName)
   logout(@Req() request: Request, @Res() res: Response) {
     if (
       request.cookies[UserRefreshTokenCookieName] &&
@@ -104,6 +126,9 @@ export class AuthController {
   }
 
   @Post('reset-password')
+  @ApiBody({
+    schema: resetPasswordSwaggerSchema,
+  })
   async getResetPasswordLink(
     @Body(new JoiValidationPipe(resetPasswordEmailSchema))
     body: {
@@ -132,7 +157,7 @@ export class AuthController {
     return this.authService.resetPassword(token, password);
   }
 
-  @Post('/email-available')
+  @Get('/email-available')
   async isEmailAvailable(
     @Body('requestedEmail', new JoiValidationPipe(paramEmailSchema))
     requestedEmail: string,

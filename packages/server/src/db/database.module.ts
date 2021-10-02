@@ -6,8 +6,14 @@ import { UserRepository } from './services/user.repository';
 import { DB_URL } from '../shared/config/constants';
 import { RevokedTokenRepository } from './services/revoked-token.repository';
 import { ProductRepository } from './services/product.repository';
+import { OrderRepository } from './services/order.repository';
 
-const PROVIDERS = [UserRepository, RevokedTokenRepository, ProductRepository];
+const PROVIDERS = [
+  UserRepository,
+  RevokedTokenRepository,
+  ProductRepository,
+  OrderRepository,
+];
 
 export const importMongooseModule = () =>
   MongooseModule.forRoot(DB_URL, {
