@@ -3,6 +3,7 @@ import { Document, Types } from 'mongoose';
 import { Product } from '../../../interfaces/product.interface';
 import { AnonymousUser, User } from '../../../interfaces/user.interface';
 import { Order, OrderStatus } from '../../../interfaces/order.interface';
+import { AnonymousUserSchema } from '../user/anonymous-user.schema';
 
 @Schema({
   timestamps: true,
@@ -15,7 +16,12 @@ export class OrderModel extends Document implements Order {
     type: Types.ObjectId,
     ref: 'usermodels',
   })
-  user: User | AnonymousUser;
+  user?: User;
+
+  @Prop({
+    type: AnonymousUserSchema,
+  })
+  anonymousUser?: AnonymousUser;
 
   @Prop({
     type: Types.ObjectId,
@@ -29,7 +35,7 @@ export class OrderModel extends Document implements Order {
   @Prop({
     type: String,
     enum: [
-      OrderStatus.Verifying,
+      OrderStatus.Confirmed,
       OrderStatus.InShipping,
       OrderStatus.Shipped,
       OrderStatus.Delivered,

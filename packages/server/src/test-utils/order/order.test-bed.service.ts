@@ -35,4 +35,14 @@ export class OrderTestBedService {
     }
     return docs;
   }
+  async insertAnonymousOrder(productId: string) {
+    const order = mockOrder();
+    return {
+      document: await this.orderRepository.create({
+        ...order,
+        product: (productId as unknown) as Product,
+      }),
+      order,
+    };
+  }
 }

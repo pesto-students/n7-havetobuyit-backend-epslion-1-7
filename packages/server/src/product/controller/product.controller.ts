@@ -22,7 +22,7 @@ import { JwtAuthGuard } from '../../shared/auth/jwt-auth.guard';
 import { Roles } from '../../shared/auth/roles.decorator';
 import { RolesGuard } from '../../shared/auth/roles.guard';
 import { HttpExceptionFilter } from '../../shared/filters/http-exception.filter';
-import { ProductService } from '../service/product.service';
+import { ProductService } from '../../shared/product/product.service';
 import {
   createProductSchema,
   idSchema,

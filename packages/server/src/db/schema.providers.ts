@@ -8,6 +8,10 @@ import {
   RevokedTokenModel,
   RevokedTokenSchema,
 } from './schemas/revoked-token.schema';
+import {
+  AnonymousUserModel,
+  AnonymousUserSchema,
+} from './schemas/user/anonymous-user.schema';
 import { UserModel, UserSchema } from './schemas/user/user.schema';
 
 export const schemaProviders = [
@@ -31,4 +35,5 @@ export const schemaProviders = [
     name: ReviewModel.name,
     schema: ReviewSchema,
   },
+  { name: AnonymousUserModel.name, schema: AnonymousUserSchema },
 ];

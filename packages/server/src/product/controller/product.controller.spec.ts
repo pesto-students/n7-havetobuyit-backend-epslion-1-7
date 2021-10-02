@@ -19,7 +19,7 @@ import {
   ProductStatus,
 } from '../../interfaces/product.interface';
 import { ProductController } from './product.controller';
-import { ProductService } from '../service/product.service';
+import { ProductService } from '../../shared/product/product.service';
 
 describe('ProductController', () => {
   let app: INestApplication;

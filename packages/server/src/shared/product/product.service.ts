@@ -4,8 +4,8 @@ import {
   ReactionsMapping,
   ReactionWeight,
   ReviewWeight,
-} from '../../shared/config/constants';
-import { makeVError } from '../../shared/utils/error';
+} from '../config/constants';
+import { makeVError } from '../utils/error';
 import { ProductRepository } from '../../db/services/product.repository';
 import {
   AvailableReactions,
@@ -21,9 +21,13 @@ import { UserModel } from 'src/db/schemas/user/user.schema';
 @Injectable()
 export class ProductService {
   constructor(
-    private readonly productRepository: ProductRepository,
     private readonly userRepository: UserRepository,
+    private readonly productRepository: ProductRepository,
   ) {}
+
+  getModel(): ProductRepository {
+    return this.productRepository;
+  }
 
   async getRandom() {
     return this.productRepository

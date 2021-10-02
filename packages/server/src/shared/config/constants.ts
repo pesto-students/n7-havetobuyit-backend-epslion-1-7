@@ -1,7 +1,19 @@
+import { config } from 'dotenv';
 import ms from 'ms';
 import { AvailableReactions } from '../../interfaces/product.interface';
+
+process.env.NODE_ENV === 'test'
+  ? config({
+      path: __dirname + '/../../../.test.env',
+    })
+  : config({
+      path: __dirname + '/../../../.prod.env',
+    });
+
 export const MandrillProductionApiKey = process.env.MandrillProductionApiKey;
 export const MandrillTestApiKey = process.env.MandrillTestApiKey;
+export const StripeTestSecretKey = process.env.StripeTestSecretKey;
+export const StripeProductionSecretKey = process.env.StripeProductionSecretKey;
 
 export const ReactionToSentimentMapping = {
   [AvailableReactions.Sad]: -1,

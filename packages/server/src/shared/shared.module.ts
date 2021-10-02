@@ -10,6 +10,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { MailService } from './mail/mail.service';
 import { transportFactory } from './mail/transport.factory';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { ProductService } from './product/product.service';
 @Module({
   providers: [
     AuthService,
@@ -17,6 +18,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
     GoogleStrategy,
     transportFactory,
     MailService,
+    ProductService,
   ],
   imports: [
     DatabaseModule,
@@ -25,7 +27,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
       signOptions: { expiresIn: AccessTokenExpirationTime },
     }),
   ],
-  exports: [DatabaseModule, AuthService, MailService],
+  exports: [DatabaseModule, AuthService, MailService, ProductService],
 })
 export class SharedModule {
   static forRoot(): DynamicModule {

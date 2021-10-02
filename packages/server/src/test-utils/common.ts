@@ -23,7 +23,7 @@ import { TRANSPORTER } from '../shared/mail/constants';
 import { AuthController } from '../auth/controller/auth.controller';
 import { UserService } from '../user/service/user.service';
 import { transportFactory } from '../shared/mail/transport.factory';
-import { ProductService } from '../product/service/product.service';
+import { ProductService } from '../shared/product/product.service';
 
 export const provideMongoDb = () => {
   return [MongooseModule.forRoot(DB_URL)];
@@ -52,9 +52,6 @@ export const buildMockTransportFactory = async () => {
   };
 };
 export const makeTestModule = async (controllers: any[], services: any[]) => {
-  config({
-    path: __dirname + '/../../test.env',
-  });
   const moduleRef: TestingModule = await Test.createTestingModule({
     providers: [
       JwtStrategy,

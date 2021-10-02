@@ -3,9 +3,7 @@ import { Document } from 'mongoose';
 import { Address, AnonymousUser } from '../../../interfaces/user.interface';
 import { AddressSchema } from './address.schema';
 
-@Schema({
-  timestamps: true,
-})
+
 export class AnonymousUserModel extends Document implements AnonymousUser {
   @Prop()
   email: string;

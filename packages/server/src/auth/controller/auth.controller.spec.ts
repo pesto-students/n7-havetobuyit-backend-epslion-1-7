@@ -121,6 +121,8 @@ describe('Auth Module', () => {
           email: credentials.email,
         })
         .expect(201);
+
+      expect(sendMailSpy).toHaveBeenCalled();
       const { html } = sendMailSpy.mock.calls[0][0].message;
       expect(html).toBeDefined();
       const token = getTokenFromHTML(html);
